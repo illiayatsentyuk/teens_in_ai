@@ -129,7 +129,7 @@ function Home() {
                     langTo,
                     dots
                 })
-            })
+            }) 
             if (!response.ok) {
                 const errText = await response.text()
                 throw new Error(errText || `HTTP ${response.status}`)
