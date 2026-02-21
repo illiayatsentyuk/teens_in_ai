@@ -288,14 +288,20 @@ function Home() {
                                 {result?.elements?.length > 0 && result.elements.map((el, i) => {
                                     const dot = dots[i]
                                     if (!dot) return null
+                                    const isRightSide = dot.x > 50
+                                    const yOffset = (i * 45) - 45 // Wider staggering to avoid overlap
                                     return (
                                         <div key={i} className="dot-label" style={{
                                             position: 'absolute',
                                             left: `${dot.x}%`,
                                             top: `${dot.y}%`,
-                                            transform: 'translate(15px, -50%)',
-                                            zIndex: 10,
-                                            pointerEvents: 'auto'
+                                            // 35px gap so the red marker is visible beside the label
+                                            transform: isRightSide
+                                                ? `translate(calc(-100% - 35px), calc(-50% + ${yOffset}px))`
+                                                : `translate(35px, calc(-50% + ${yOffset}px))`,
+                                            zIndex: 20 + i,
+                                            pointerEvents: 'auto',
+                                            maxWidth: '180px'
                                         }}>
                                             {el.textFrom}: {el.textTo}
                                             <div style={{ marginTop: '4px' }}>

@@ -169,5 +169,14 @@ body {
     border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
     box-shadow: 6px 6px 0 var(--border-black);
     color: var(--bg-dark);
-    min-width: 120px;
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 1.2;
+    transition: transform 0.2s, z-index 0s;
+}
+
+.dot-label:hover {
+    z-index: 999 !important;
+    border-color: var(--bg-blue);
+    box-shadow: 10px 10px 0 var(--border-black);
 }
