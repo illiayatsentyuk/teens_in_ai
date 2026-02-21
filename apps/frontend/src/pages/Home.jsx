@@ -331,6 +331,13 @@ function Home() {
                 </div>
             )}
         </main>
+        <section>
+            <div>
+                <h2></h2>
+                <input type="checkbox" />
+                <label>By signing up you agree to our <Link to="#">Terms and Conditions</Link> and <Link to="#">Privacy policy</Link></label>
+            </div>
+        </section>
     )
 }
 
