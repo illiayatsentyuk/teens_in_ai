@@ -1,0 +1,30 @@
+{
+  "name": "gamebaseua",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "turbo dev",
+    "build": "turbo build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/illiayatsentyuk/GameBaseUA.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/illiayatsentyuk/GameBaseUA/issues"
+  },
+  "homepage": "https://github.com/illiayatsentyuk/GameBaseUA#readme",
+  "packageManager": "npm@11.3.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "turbo": "^2.5.6"
+  }
+}
