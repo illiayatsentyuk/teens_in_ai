@@ -1,5 +1,5 @@
 {
-  "name": "gamebaseua",
+  "name": "teens_in_ai",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/illiayatsentyuk/GameBaseUA.git"
+    "url": "git+https://github.com/illiayatsentyuk/teens_in_ai.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/illiayatsentyuk/GameBaseUA/issues"
+    "url": "https://github.com/illiayatsentyuk/teens_in_ai.gitissues"
   },
-  "homepage": "https://github.com/illiayatsentyuk/GameBaseUA#readme",
+  "homepage": "https://github.com/illiayatsentyuk/teens_in_ai#readme",
   "packageManager": "npm@11.3.0",
   "workspaces": [
     "apps/*",
