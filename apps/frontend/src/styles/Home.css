@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Neucha&display=swap');
+
+:root {
+    --bg-dark: #2F064C;
+    --bg-blue: #3989DE;
+    --box-blue: #5285F4;
+    --text-white: #FFFFFF;
+    --border-black: #1A0B2E;
+    --font-doodle: 'Neucha', cursive;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-doodle);
+    background-color: #f0f0f0;
+}
+
+.home-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-top {
+    background-color: var(--bg-dark);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 150px;
+    border-bottom: 4px solid var(--border-black);
+}
+
+.doodle-button {
+    background: white;
+    border: 3px solid var(--border-black);
+    padding: 10px 20px;
+    font-family: var(--font-doodle);
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--bg-dark);
+}
+
+.doodle-button:hover {
+    transform: scale(1.05) rotate(-1deg);
+}
+
+.lang-selector-box {
+    background-color: var(--bg-blue);
+    border: 3px solid var(--border-black);
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.lang-dropdowns {
+    display: flex;
+    gap: 10px;
+}
+
+.doodle-select {
+    background: white;
+    border: 2px solid var(--border-black);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-family: var(--font-doodle);
+    font-size: 1rem;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background-color: white;
+}
+
+.camera-box {
+    background-color: var(--box-blue);
+    border: 4px solid var(--border-black);
+    padding: 40px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    max-width: 600px;
+    width: 100%;
+}
+
+.camera-box-title {
+    color: white;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.preview-container {
+    width: 100%;
+    background: white;
+    border: 3px solid var(--border-black);
+    margin-bottom: 20px;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.camera-icon-bg {
+    width: 150px;
+    margin: 20px;
+}
+
+.camera-box-footer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.analyze-button {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    background: var(--bg-blue);
+    color: white;
+    font-family: var(--font-doodle);
+    font-size: 2.2rem;
+    padding: 10px 45px;
+    border: 4px solid var(--border-black);
+    border-radius: 60% 40% 50% 50% / 50% 50% 50% 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px 5px rgba(82, 133, 244, 0.6);
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-shadow: 2px 2px 0 var(--border-black);
+    z-index: 100;
+}
+
+.analyze-button:hover:not(:disabled) {
+    transform: scale(1.1) rotate(-3deg);
+    box-shadow: 0 0 25px 10px rgba(82, 133, 244, 0.9);
+}
+
+.analyze-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.dot-label {
+    background: white;
+    border: 3px solid var(--border-black);
+    padding: 8px 15px;
+    font-family: var(--font-doodle);
+    font-size: 1.1rem;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    box-shadow: 6px 6px 0 var(--border-black);
+    color: var(--bg-dark);
+    min-width: 120px;
+}

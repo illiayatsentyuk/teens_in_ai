@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import '../styles/Home.css'
 
 const MAX_DOTS = 3
 
@@ -14,7 +15,6 @@ function Home() {
     const [savedIndices, setSavedIndices] = useState([])
     const videoRef = useRef(null)
     const streamRef = useRef(null)
-
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0]
@@ -199,146 +199,164 @@ function Home() {
     }
 
     return (
-        <main>
-            <nav>
-                <Link to="/dictionary">Відкрити словник</Link>
-            </nav>
-
-            <div>
-                <input type="file" onChange={handleImageUpload} accept="image/*" />
-                <button onClick={startCamera}>📷 Take Photo</button>
-            </div>
-
-            {showCamera && (
-                <div>
-                    <video ref={videoRef} autoPlay style={{ maxWidth: '100%' }}></video>
-                    <div>
-                        <button onClick={capturePhoto}>Capture</button>
-                        <button onClick={stopCamera}>Cancel</button>
+        <div className="home-container">
+            <header className="header-top">
+                <div className="header-left">
+                    <div className="doodle-button">
+                        <span role="img" aria-label="globe">🌐</span> ОБЕРИ МОВУ
+                    </div>
+                    <div className="lang-selector-box">
+                        <div className="lang-dropdowns">
+                            <div>
+                                <span>З: </span>
+                                <select className="doodle-select" value={langFrom} onChange={e => setLangFrom(e.target.value)}>
+                                    <option value="Ukrainian">Ukrainian</option>
+                                    <option value="English">English</option>
+                                </select>
+                            </div>
+                            <div>
+                                <span> На: </span>
+                                <select className="doodle-select" value={langTo} onChange={e => setLangTo(e.target.value)}>
+                                    <option value="English">English</option>
+                                    <option value="Ukrainian">Ukrainian</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            )}
-
-            <div>
-                {dots.length > 0 && <button type="button" onClick={clearDots}>Clear all dots</button>}
-
-                <div>
-                    <span>З: </span>
-                    <select value={langFrom} onChange={e => setLangFrom(e.target.value)}>
-                        <option value="Ukrainian">Ukrainian</option>
-                        <option value="English">English</option>
-                    </select>
-                    <span> На: </span>
-                    <select value={langTo} onChange={e => setLangTo(e.target.value)}>
-                        <option value="English">English</option>
-                        <option value="Ukrainian">Ukrainian</option>
-                    </select>
+                <div className="header-right">
+                    <Link to="/dictionary" className="doodle-button">
+                        <span role="img" aria-label="book">📖</span> ВІДКРИТИ СЛОВНИК
+                    </Link>
                 </div>
+            </header>
 
-                <button onClick={analyzeImage} disabled={loading || dots.length === 0}>
-                    {loading ? '...' : 'Analyze'}
-                </button>
-            </div>
+            <main className="main-content">
+                <div className="camera-box">
+                    <h2 className="camera-box-title">СФОТОГРАФУЙ ПРЕДМЕТ!</h2>
 
-            {preview && (
-                <div style={{ position: 'relative', display: 'inline-block' }}>
-                    <img
-                        src={preview}
-                        onClick={handleImageClick}
-                        alt="preview"
-                        style={{ maxWidth: '100%', cursor: dots.length >= MAX_DOTS ? 'default' : 'crosshair' }}
-                    />
-                    {dots.map((dot, index) => (
-                        <div
-                            key={index}
-                            onClick={(e) => { e.stopPropagation(); removeDot(index) }}
-                            style={{
-                                position: 'absolute',
-                                left: `${dot.x}%`,
-                                top: `${dot.y}%`,
-                                width: '14px',
-                                height: '14px',
-                                background: 'red',
-                                borderRadius: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                cursor: 'pointer',
-                                zIndex: 2,
-                                border: '2px solid white',
-                                boxSizing: 'border-box'
-                            }}
-                            title={`Point ${index + 1} (click to remove)`}
-                        >
-                            <span style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', fontSize: 9, color: 'white', fontWeight: 'bold' }}>{index + 1}</span>
-                        </div>
-                    ))}
+                    <div className="preview-container">
+                        {!preview && !showCamera && (
+                            <div className="camera-icon-placeholder">
+                                <svg viewBox="0 0 512 512" width="150" fill="currentColor" style={{ opacity: 0.8, color: 'white' }}>
+                                    <path d="M512 144c0-26.5-21.5-48-48-48h-72l-20.2-40.3C363.6 39.1 347.1 32 329.7 32H182.3c-17.4 0-33.9 7.1-42.1 23.7L120 96H48C21.5 96 0 117.5 0 144v272c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V144zM256 400c-66.2 0-120-53.8-120-120s53.8-120 120-120 120 53.8 120 120-53.8 120-120 120zm0-192c-39.7 0-72 32.3-72 72s32.3 72 72 72 72-32.3 72-72-32.3-72-72-72zm112-64c-13.3 0-24-10.7-24-24s10.7-24 24-24 24 10.7 24 24-10.7 24-24 24z" />
+                                </svg>
+                            </div>
+                        )}
 
-                    {result?.elements?.length > 0 && result.elements.map((el, i) => {
-                        const dot = dots[i]
-                        if (!dot) return null
-                        return (
-                            <div key={i} style={{
-                                position: 'absolute',
-                                left: `${dot.x}%`,
-                                top: `${dot.y}%`,
-                                transform: 'translate(15px, -50%)',
-                                zIndex: 10,
-                                background: 'white',
-                                padding: '4px 8px',
-                                border: '1px solid black',
-                                borderRadius: '4px',
-                                fontSize: '12px',
-                                minWidth: '100px',
-                                boxShadow: '2px 2px 5px rgba(0,0,0,0.2)'
-                            }}>
-                                {el.textFrom}: {el.textTo}
-                                <div style={{ marginTop: '4px' }}>
-                                    <button
-                                        onClick={(e) => { e.stopPropagation(); saveItemToDictionary(el, i) }}
-                                        style={{ fontSize: '10px', cursor: savedIndices.includes(i) ? 'default' : 'pointer' }}
-                                        disabled={savedIndices.includes(i)}
-                                    >
-                                        {savedIndices.includes(i) ? 'Збережено' : 'Зберегти'}
-                                    </button>
+                        {showCamera && (
+                            <div className="camera-view">
+                                <video ref={videoRef} autoPlay style={{ maxWidth: '100%', borderRadius: '5px' }}></video>
+                                <div className="camera-overlay-controls">
+                                    <button className="doodle-button" onClick={capturePhoto}>Capture</button>
+                                    <button className="doodle-button" onClick={stopCamera}>Cancel</button>
                                 </div>
                             </div>
-                        )
-                    })}
-                </div>
-            )}
+                        )}
 
-            {result && !loading && (
-                <div style={{ marginTop: '15px' }}>
-                    <button
-                        onClick={saveToDictionary}
-                        disabled={savedIndices.length === (result.elements?.length || 0)}
-                        style={{
-                            padding: '10px 15px',
-                            background: savedIndices.length === (result.elements?.length || 0) ? '#ccc' : 'black',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: savedIndices.length === (result.elements?.length || 0) ? 'default' : 'pointer'
-                        }}
-                    >
-                        {savedIndices.length === (result.elements?.length || 0) ? 'Збережено!' : 'Зберегти все'}
-                    </button>
-                    <button
-                        onClick={clearDots}
-                        style={{ marginLeft: '10px', padding: '10px 15px', cursor: 'pointer' }}
-                    >
-                        Очистити
-                    </button>
+                        {preview && !showCamera && (
+                            <div style={{ position: 'relative' }}>
+                                <img
+                                    src={preview}
+                                    onClick={handleImageClick}
+                                    alt="preview"
+                                    style={{ width: '100%', display: 'block', cursor: dots.length >= MAX_DOTS ? 'default' : 'crosshair' }}
+                                />
+                                {dots.map((dot, index) => (
+                                    <div
+                                        key={index}
+                                        onClick={(e) => { e.stopPropagation(); removeDot(index) }}
+                                        style={{
+                                            position: 'absolute',
+                                            left: `${dot.x}%`,
+                                            top: `${dot.y}%`,
+                                            width: '20px',
+                                            height: '20px',
+                                            background: 'red',
+                                            borderRadius: '50%',
+                                            transform: 'translate(-50%, -50%)',
+                                            cursor: 'pointer',
+                                            zIndex: 2,
+                                            border: '3px solid white',
+                                            boxSizing: 'border-box'
+                                        }}
+                                    >
+                                        <span style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', fontSize: 12, color: 'white', fontWeight: 'bold' }}>{index + 1}</span>
+                                    </div>
+                                ))}
+
+                                {result?.elements?.length > 0 && result.elements.map((el, i) => {
+                                    const dot = dots[i]
+                                    if (!dot) return null
+                                    return (
+                                        <div key={i} className="dot-label" style={{
+                                            position: 'absolute',
+                                            left: `${dot.x}%`,
+                                            top: `${dot.y}%`,
+                                            transform: 'translate(15px, -50%)',
+                                            zIndex: 10,
+                                            pointerEvents: 'auto'
+                                        }}>
+                                            {el.textFrom}: {el.textTo}
+                                            <div style={{ marginTop: '4px' }}>
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); saveItemToDictionary(el, i) }}
+                                                    style={{ fontSize: '10px', cursor: savedIndices.includes(i) ? 'default' : 'pointer', fontFamily: 'var(--font-doodle)' }}
+                                                    disabled={savedIndices.includes(i)}
+                                                >
+                                                    {savedIndices.includes(i) ? 'Збережено' : 'Зберегти'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="camera-box-footer">
+                        <button className="doodle-button" onClick={startCamera}>
+                            <span role="img" aria-label="camera">📷</span> ВІДКРИТИ КАМЕРУ
+                        </button>
+                        <div className="upload-btn-wrapper">
+                            <label className="doodle-button" style={{ cursor: 'pointer' }}>
+                                <span role="img" aria-label="upload">📤</span> ЗАВАНТАЖИТИ ФОТО
+                                <input type="file" onChange={handleImageUpload} accept="image/*" style={{ display: 'none' }} />
+                            </label>
+                        </div>
+                    </div>
                 </div>
-            )}
-        </main>
-        <section>
-            <div>
-                <h2></h2>
-                <input type="checkbox" />
-                <label>By signing up you agree to our <Link to="#">Terms and Conditions</Link> and <Link to="#">Privacy policy</Link></label>
-            </div>
-        </section>
+
+                <button
+                    className="analyze-button"
+                    onClick={analyzeImage}
+                    disabled={loading || dots.length === 0}
+                >
+                    {loading ? '...' : 'Analyze'}
+                </button>
+
+                {result && !loading && (
+                    <div style={{ position: 'fixed', bottom: '40px', right: '40px', display: 'flex', gap: '15px' }}>
+                        <button
+                            className="doodle-button"
+                            onClick={saveToDictionary}
+                            disabled={savedIndices.length === (result.elements?.length || 0)}
+                            style={{ background: '#28a745', color: 'white' }}
+                        >
+                            {savedIndices.length === (result.elements?.length || 0) ? 'Збережено!' : 'Зберегти все'}
+                        </button>
+                        <button
+                            className="doodle-button"
+                            onClick={clearDots}
+                        >
+                            Очистити
+                        </button>
+                    </div>
+                )}
+            </main>
+        </div>
     )
 }
 
 export default Home
+
