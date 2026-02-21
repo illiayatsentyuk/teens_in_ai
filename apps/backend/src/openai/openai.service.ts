@@ -15,6 +15,7 @@ export class OpenAIService {
 
   async analyzeImage(body: AnalizeImagesDto) {
     const { image, langFrom, langTo, dots } = body;
+    const pointsDescription = dots.map((d, i) => `Point ${i + 1}: X:${d.x}%, Y:${d.y}%`).join('; ');
     const promptText = `The user marked ${dots.length} point(s) on this image at the following coordinates (percentage of image width and height): ${pointsDescription}.
 
     For each marked point:
