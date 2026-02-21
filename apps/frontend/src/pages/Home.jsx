@@ -11,8 +11,10 @@ function Home() {
     const [result, setResult] = useState(null)
     const [loading, setLoading] = useState(false)
     const [showCamera, setShowCamera] = useState(false)
+    const [isSaved, setIsSaved] = useState(false)
     const videoRef = useRef(null)
     const streamRef = useRef(null)
+   
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0]
@@ -187,6 +189,7 @@ Respond ONLY with the JSON object, no other text.`
     const saveToDictionary = () => {
         const saved = JSON.parse(localStorage.getItem('dictionary') || '[]')
         const itemsToSave = []
+        const execute = false;
 
         if (result.elements && result.elements.length > 0) {
             result.elements.forEach((el, index) => {
@@ -210,6 +213,10 @@ Respond ONLY with the JSON object, no other text.`
 
         localStorage.setItem('dictionary', JSON.stringify([...itemsToSave, ...saved]))
         alert(`Збережено ${itemsToSave.length} пунктів у словник!`)
+        if (!execute) {
+            execute=true;
+            alert('всьо!')
+        }
     }
 
     return (
