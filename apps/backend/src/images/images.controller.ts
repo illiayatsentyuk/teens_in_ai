@@ -3,7 +3,7 @@ import { Body } from '@nestjs/common';
 import { ImagesService } from './images.service';
 import AnalizeImagesDto from './dto/analize-images.dto';
 
-@Controller('images')
+@Controller('')
 export class ImagesController {
 
     constructor(private readonly imagesService: ImagesService){}
