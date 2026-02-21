@@ -171,20 +171,45 @@ Respond ONLY with the JSON object, no other text.`
         }
     }
 
-    const saveToDictionary = () => {
+    const saveItemToDictionary = (item, index) => {
         const saved = JSON.parse(localStorage.getItem('dictionary') || '[]')
-        const firstDot = dots[0] || { x: 0, y: 0 }
         const newItem = {
-            id: Date.now(),
-            image: result.thumbnail || preview,
-            x: firstDot.x,
-            y: firstDot.y,
-            result: `${result.textFrom} - ${result.textTo}`,
+            id: Date.now() + index,
+            image: item.thumbnail || preview,
+            result: `${item.textFrom} - ${item.textTo}`,
             language: `${langFrom} -> ${langTo}`,
             date: new Date().toLocaleString()
         }
         localStorage.setItem('dictionary', JSON.stringify([newItem, ...saved]))
-        alert('Saved to dictionary!')
+        alert('Збережено у словник!')
+    }
+
+    const saveToDictionary = () => {
+        const saved = JSON.parse(localStorage.getItem('dictionary') || '[]')
+        const itemsToSave = []
+
+        if (result.elements && result.elements.length > 0) {
+            result.elements.forEach((el, index) => {
+                itemsToSave.push({
+                    id: Date.now() + index,
+                    image: el.thumbnail || preview,
+                    result: `${el.textFrom} - ${el.textTo}`,
+                    language: `${langFrom} -> ${langTo}`,
+                    date: new Date().toLocaleString()
+                })
+            })
+        } else {
+            itemsToSave.push({
+                id: Date.now(),
+                image: result.thumbnail || preview,
+                result: `${result.textFrom} - ${result.textTo}`,
+                language: `${langFrom} -> ${langTo}`,
+                date: new Date().toLocaleString()
+            })
+        }
+
+        localStorage.setItem('dictionary', JSON.stringify([...itemsToSave, ...saved]))
+        alert(`Збережено ${itemsToSave.length} пунктів у словник!`)
     }
 
     return (
@@ -261,42 +286,60 @@ Respond ONLY with the JSON object, no other text.`
                         </div>
                     ))}
 
-                    {result && (
-                        <div style={{
-                            position: 'absolute',
-                            left: dots[0] ? `${dots[0].x}%` : '50%',
-                            top: dots[0] ? `${dots[0].y}%` : '50%',
-                            transform: 'translate(10px, 10px)',
-                            zIndex: 3,
-                            background: 'white',
-                            padding: '8px',
-                            border: '1px solid black',
-                            maxWidth: '280px'
-                        }}>
-                            <strong>Result:</strong>
-                            {result.elements?.length > 0 ? (
-                                result.elements.map((el, i) => (
-                                    <div key={i} style={{ marginTop: i ? 8 : 0, paddingTop: i ? 8 : 0, borderTop: i ? '1px solid #eee' : 'none' }}>
-                                        {el.thumbnail && <img src={el.thumbnail} alt={`crop ${i + 1}`} style={{ width: '80px', display: 'block' }} />}
-                                        <div><strong>{el.textFrom}</strong> → {el.textTo}</div>
-                                        {el.bbox && <small style={{ color: '#666' }}>Stroke bbox: [{el.bbox.join(', ')}]</small>}
-                                    </div>
-                                ))
-                            ) : (
-                                <>
-                                    {result.thumbnail && <div><img src={result.thumbnail} alt="crop" style={{ width: '80px', display: 'block' }} /></div>}
-                                    <div>{result.textFrom}</div>
-                                    <div>{result.textTo}</div>
-                                </>
-                            )}
+                    {result?.elements?.length > 0 && result.elements.map((el, i) => {
+                        const dot = dots[i]
+                        if (!dot) return null
+                        return (
+                            <div key={i} style={{
+                                position: 'absolute',
+                                left: `${dot.x}%`,
+                                top: `${dot.y}%`,
+                                transform: 'translate(15px, -50%)',
+                                zIndex: 10,
+                                background: 'white',
+                                padding: '4px 8px',
+                                border: '1px solid black',
+                                borderRadius: '4px',
+                                fontSize: '12px',
+                                minWidth: '100px',
+                                boxShadow: '2px 2px 5px rgba(0,0,0,0.2)'
+                            }}>
+                                {el.textFrom}: {el.textTo}
+                                <div style={{ marginTop: '4px' }}>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); saveItemToDictionary(el, i) }}
+                                        style={{ fontSize: '10px', cursor: 'pointer' }}
+                                    >
+                                        Зберегти
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+            )}
 
-                            {!loading && (
-                                <button onClick={saveToDictionary} style={{ marginTop: 8 }}>
-                                    Зберегти в словник
-                                </button>
-                            )}
-                        </div>
-                    )}
+            {result && !loading && (
+                <div style={{ marginTop: '15px' }}>
+                    <button
+                        onClick={saveToDictionary}
+                        style={{
+                            padding: '10px 15px',
+                            background: 'black',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Зберегти все
+                    </button>
+                    <button
+                        onClick={clearDots}
+                        style={{ marginLeft: '10px', padding: '10px 15px', cursor: 'pointer' }}
+                    >
+                        Очистити
+                    </button>
                 </div>
             )}
         </main>

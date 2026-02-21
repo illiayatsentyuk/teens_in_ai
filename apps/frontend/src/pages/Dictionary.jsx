@@ -68,7 +68,6 @@ function Dictionary() {
                             <li key={item.id} className="dictionary-item">
                                 <div className="item-visual">
                                     <img src={item.image} alt="thumbnail" className="item-thumbnail" />
-                                    <span className="coords">X:{item.x}% Y:{item.y}%</span>
                                 </div>
                                 <div className="item-info">
                                     <span className="item-date">{item.date}</span>
