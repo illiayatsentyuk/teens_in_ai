@@ -11,10 +11,10 @@ function Home() {
     const [result, setResult] = useState(null)
     const [loading, setLoading] = useState(false)
     const [showCamera, setShowCamera] = useState(false)
-    const [isSaved, setIsSaved] = useState(false)
+    const [savedIndices, setSavedIndices] = useState([])
     const videoRef = useRef(null)
     const streamRef = useRef(null)
-   
+
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0]
@@ -86,6 +86,7 @@ function Home() {
     const clearDots = () => {
         setDots([])
         setResult(null)
+        setSavedIndices([])
     }
 
     const cropImage = (imageSrc, bbox) => {
@@ -113,6 +114,7 @@ function Home() {
         if (!preview) return alert('Upload image first')
         if (dots.length === 0) return alert('Click on the image to place at least one dot (up to 3)')
         setLoading(true)
+        setSavedIndices([])
         setResult({ textFrom: 'Analyzing...', textTo: '...', thumbnail: null, elements: [] })
 
         const apiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '') || 'http://localhost:3000'
@@ -155,6 +157,7 @@ function Home() {
     }
 
     const saveItemToDictionary = (item, index) => {
+        if (savedIndices.includes(index)) return
         const saved = JSON.parse(localStorage.getItem('dictionary') || '[]')
         const newItem = {
             id: Date.now() + index,
@@ -164,16 +167,17 @@ function Home() {
             date: new Date().toLocaleString()
         }
         localStorage.setItem('dictionary', JSON.stringify([newItem, ...saved]))
+        setSavedIndices(prev => [...prev, index])
         alert('Збережено у словник!')
     }
 
     const saveToDictionary = () => {
         const saved = JSON.parse(localStorage.getItem('dictionary') || '[]')
         const itemsToSave = []
-        const execute = false;
+        const currentElements = result.elements || []
 
-        if (result.elements && result.elements.length > 0) {
-            result.elements.forEach((el, index) => {
+        currentElements.forEach((el, index) => {
+            if (!savedIndices.includes(index)) {
                 itemsToSave.push({
                     id: Date.now() + index,
                     image: el.thumbnail || preview,
@@ -181,23 +185,17 @@ function Home() {
                     language: `${langFrom} -> ${langTo}`,
                     date: new Date().toLocaleString()
                 })
-            })
-        } else {
-            itemsToSave.push({
-                id: Date.now(),
-                image: result.thumbnail || preview,
-                result: `${result.textFrom} - ${result.textTo}`,
-                language: `${langFrom} -> ${langTo}`,
-                date: new Date().toLocaleString()
-            })
+            }
+        })
+
+        if (itemsToSave.length === 0) {
+            alert('Усі пункти вже збережено!')
+            return
         }
 
         localStorage.setItem('dictionary', JSON.stringify([...itemsToSave, ...saved]))
+        setSavedIndices(prev => [...Array(currentElements.length).keys()])
         alert(`Збережено ${itemsToSave.length} пунктів у словник!`)
-        if (!execute) {
-            execute=true;
-            alert('всьо!')
-        }
     }
 
     return (
@@ -296,9 +294,10 @@ function Home() {
                                 <div style={{ marginTop: '4px' }}>
                                     <button
                                         onClick={(e) => { e.stopPropagation(); saveItemToDictionary(el, i) }}
-                                        style={{ fontSize: '10px', cursor: 'pointer' }}
+                                        style={{ fontSize: '10px', cursor: savedIndices.includes(i) ? 'default' : 'pointer' }}
+                                        disabled={savedIndices.includes(i)}
                                     >
-                                        Зберегти
+                                        {savedIndices.includes(i) ? 'Збережено' : 'Зберегти'}
                                     </button>
                                 </div>
                             </div>
@@ -311,16 +310,17 @@ function Home() {
                 <div style={{ marginTop: '15px' }}>
                     <button
                         onClick={saveToDictionary}
+                        disabled={savedIndices.length === (result.elements?.length || 0)}
                         style={{
                             padding: '10px 15px',
-                            background: 'black',
+                            background: savedIndices.length === (result.elements?.length || 0) ? '#ccc' : 'black',
                             color: 'white',
                             border: 'none',
                             borderRadius: '4px',
-                            cursor: 'pointer'
+                            cursor: savedIndices.length === (result.elements?.length || 0) ? 'default' : 'pointer'
                         }}
                     >
-                        Зберегти все
+                        {savedIndices.length === (result.elements?.length || 0) ? 'Збережено!' : 'Зберегти все'}
                     </button>
                     <button
                         onClick={clearDots}
