@@ -254,7 +254,7 @@ function Home() {
                 </div>
             </header>
 
-            <main className="main-content">
+            <main className="main-content"> 
                 <div className="camera-box">
                     <h2 className="camera-box-title">How to use:</h2>
                     <ul style={{ color: '#ffeb3b', fontWeight: 'bold', margin: '0 0 1rem', paddingLeft: '1.25rem', lineHeight: 1.5, textAlign: 'center', listStyle:"none" }}>
