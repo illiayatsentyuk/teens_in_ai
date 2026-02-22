@@ -7,29 +7,40 @@ import '../styles/Dictionary.css'
 function Dictionary() {
     const [items, setItems] = useState([])
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const [sentence, setSentence] = useState([])
+    const [sentenceState, setSentenceState] = useState({}) // item.id -> sentence string
     const [isSentenceStarted, setIsSentenceStarted] = useState(false)
+    const [loadingItemId, setLoadingItemId] = useState(null)
     const listRef = useRef(null)
-
 
     useEffect(() => {
         const saved = JSON.parse(localStorage.getItem('dictionary') || '[]')
         setItems(saved)
     }, [])
 
-    const createSentence = async () => {
+    const createSentence = async (id, resultText) => {
+        setLoadingItemId(id)
         setIsSentenceStarted(true)
         const apiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '') || 'http://localhost:3000'
 
-        const response = await fetch(`${apiUrl}/sentence`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ items }),
-        })
-        const data = await response.json()
-        setSentence(data)
-        setIsSentenceStarted(false)
+        try {
+            const wordsArray = resultText.split('-').map(w => w.trim())
+            const response = await fetch(`${apiUrl}/sentence`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ words: wordsArray }),
+            })
+            const data = await response.json()
+            const parsedData = typeof data === 'string' ? JSON.parse(data) : data
+            const generatedText = parsedData.sentence || parsedData.text || JSON.stringify(parsedData)
 
+            setSentenceState(prev => ({ ...prev, [id]: generatedText }))
+        } catch (err) {
+            console.error('Failed to generate sentence:', err)
+            alert('Failed to generate sentence. Please try again.')
+        } finally {
+            setIsSentenceStarted(false)
+            setLoadingItemId(null)
+        }
     }
     const deleteItem = (id) => {
         if (!window.confirm('Are you sure you want to delete this entry?')) return
@@ -173,12 +184,32 @@ function Dictionary() {
                                     <span className="item-date">{item.date}</span>
                                     <div className="item-lang">{item.language}</div>
                                     <div className="item-result">{item.result}</div>
-                                    <button className="delete-btn" data-html2canvas-ignore onClick={() => deleteItem(item.id)}>
-                                        Delete
-                                    </button>
-                                    <button onClick={() => createSentence(item.result)} style={{}}>
-                                        Create Sentence
-                                    </button>
+                                    <div className="item-actions" style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                                        <button className="delete-btn" data-html2canvas-ignore onClick={() => deleteItem(item.id)}>
+                                            Delete
+                                        </button>
+                                        <button
+                                            className="doodle-button"
+                                            data-html2canvas-ignore
+                                            onClick={() => createSentence(item.id, item.result)}
+                                            disabled={isSentenceStarted && loadingItemId === item.id}
+                                            style={{ fontSize: '0.9rem', padding: '5px 15px' }}
+                                        >
+                                            {loadingItemId === item.id ? '...' : (sentenceState[item.id] ? 'Regenerate' : 'Create Sentence')}
+                                        </button>
+                                    </div>
+                                    {sentenceState[item.id] && (
+                                        <div className="generated-sentence" style={{
+                                            marginTop: '15px',
+                                            padding: '10px',
+                                            background: '#f0f8ff',
+                                            borderRadius: '8px',
+                                            borderLeft: '4px solid var(--bg-blue)',
+                                            fontStyle: 'italic'
+                                        }}>
+                                            <strong>AI Sentence:</strong> {sentenceState[item.id]}
+                                        </div>
+                                    )}
                                 </div>
                             </li>
                         ))}
