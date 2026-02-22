@@ -247,7 +247,7 @@ function Home() {
 
             <main className="main-content">
                 <div className="camera-box">
-                    <p style={{ color: '#ffeb3b', fontWeight: 'bold' }}>WARNING! Your photo is being processed by AI (errors may occur).</p>
+                    <p style={{ color: '#ffeb3b', fontWeight: 'bold' }}>Upload photo or take photo, then click on photo to choose an object, then click on "Analyze" button and save to dictionary</p>
                     <h2 className="camera-box-title">SNAP A PHOTO!</h2>
 
                     <div className="preview-container">
@@ -344,6 +344,13 @@ function Home() {
                         <button className="doodle-button" onClick={startCamera}>
                             <span role="img" aria-label="camera">📷</span> OPEN CAMERA
                         </button>
+                        <button
+                            className="analyze-button"
+                            onClick={analyzeImage}
+                            disabled={loading || dots.length === 0 || !isWarningChecked}
+                        >
+                            {loading ? '...' : 'Analyze'}
+                        </button>
                         <div className="upload-btn-wrapper">
                             <label className="doodle-button" style={{ cursor: 'pointer' }}>
                                 <span role="img" aria-label="upload">📤</span> UPLOAD PHOTO
@@ -362,23 +369,15 @@ function Home() {
                     </div>
                 </div>
 
-                <button
-                    className="analyze-button"
-                    onClick={analyzeImage}
-                    disabled={loading || dots.length === 0 || !isWarningChecked}
-                >
-                    {loading ? '...' : 'Analyze'}
-                </button>
-
                 {result && !loading && (
                     <div className="post-analyze-actions">
                         <button
                             className="doodle-button"
                             onClick={saveToDictionary}
                             disabled={savedIndices.length === (result.elements?.length || 0)}
-                            style={{ background: '#28a745', color: 'white' }}
+                            style={{ background: '#28a745', color: 'white', margin: '15px' }}
                         >
-                            {savedIndices.length === (result.elements?.length || 0) ? 'Saved!' : 'Save all'}
+                            {savedIndices.length === (result.elements?.length || 0) ? 'Saved!' : 'Save to dictionary'}
                         </button>
                         <button
                             className="doodle-button"
