@@ -187,7 +187,7 @@ body {
     justify-content: center;
     gap: 15px;
     width: 100%;
-    margin-top: 20px;
+    margin: 20px 0;
     flex-wrap: wrap;
 }
 
@@ -328,7 +328,7 @@ body {
 
 @media (max-width: 480px) {
     .logo {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
 
     .header-top {

@@ -209,26 +209,27 @@ function Home() {
     return (
         <div className="home-container">
             <header className="header-top">
+                <Link to="/" className="logo-link">
+                    <h1 className="logo">Perekladon</h1>
+                </Link>
                 <div className="burger-menu-icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                     <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
                     <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
                     <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
                 </div>
 
-                <Link to="/" className="logo-link">
-                    <h1 className="logo">Perekladon</h1>
-                </Link>
+
 
                 <div className={`mobile-nav-overlay ${isMenuOpen ? 'open' : ''}`}>
                     <Link to="/" onClick={() => setIsMenuOpen(false)} className="nav-link">Home</Link>
                     <Link to="/dictionary" onClick={() => setIsMenuOpen(false)} className="nav-link">Dictionary</Link>
                 </div>
 
-                <div className="header-left desktop-only">
+                {/* <div className="header-left desktop-only">
                     <div className="doodle-button">
                         <span role="img" aria-label="globe">🌐</span> CHOOSE LANGUAGE
                     </div>
-                    <div className="lang-selector-box">
+                     <div className="lang-selector-box">
                         <div className="lang-dropdowns">
                             <div>
                                 <span>From: </span>
@@ -245,8 +246,9 @@ function Home() {
                                 </select>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div> 
+                </div> */}
+
                 <div className="header-right desktop-only">
                     <Link to="/dictionary" className="doodle-button">
                         <span role="img" aria-label="book">📖</span> OPEN DICTIONARY
@@ -254,10 +256,10 @@ function Home() {
                 </div>
             </header>
 
-            <main className="main-content"> 
+            <main className="main-content">
                 <div className="camera-box">
                     <h2 className="camera-box-title">How to use:</h2>
-                    <ul style={{ color: '#ffeb3b', fontWeight: 'bold', margin: '0 0 1rem', paddingLeft: '1.25rem', lineHeight: 1.5, textAlign: 'center', listStyle:"none" }}>
+                    <ul style={{ color: '#ffeb3b', fontWeight: 'bold', margin: '0 0 1rem', paddingLeft: '1.25rem', lineHeight: 1.5, textAlign: 'center', listStyle: "none" }}>
                         <li>1. Upload a photo or take a photo <br />(give access to camera)</li>
                         <li>2. Click on the photo to choose an object <br />(up to 3 points)</li>
                         <li>3. Click the &quot;Analyze&quot; button</li>
@@ -371,6 +373,22 @@ function Home() {
                                 <span role="img" aria-label="upload">📤</span> UPLOAD PHOTO
                                 <input type="file" onChange={handleImageUpload} accept="image/*" style={{ display: 'none' }} />
                             </label>
+                        </div>
+                    </div>
+                    <div className="lang-selector-box">
+                        <div className="lang-dropdowns">
+                            <div>
+                                <select className="doodle-select" value={langFrom} onChange={e => setLangFrom(e.target.value)}>
+                                    <option value="Ukrainian">Ukrainian</option>
+                                    <option value="English">English</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select className="doodle-select" value={langTo} onChange={e => setLangTo(e.target.value)}>
+                                    <option value="English">English</option>
+                                    <option value="Ukrainian">Ukrainian</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div className="camera-box-warning">

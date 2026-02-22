@@ -149,31 +149,33 @@ function Dictionary() {
     return (
         <div className="dictionary-container">
             <header className="dictionary-header">
-                <div className="burger-menu-icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
-                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
-                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
-                </div>
-
                 <Link to="/" className="logo-link">
                     <h1 className="logo">Perekladon</h1>
                 </Link>
+                
+
+                
 
                 <div className={`mobile-nav-overlay ${isMenuOpen ? 'open' : ''}`}>
                     <Link to="/" onClick={() => setIsMenuOpen(false)} className="nav-link">Home</Link>
                     <Link to="/dictionary" onClick={() => setIsMenuOpen(false)} className="nav-link">Dictionary</Link>
                 </div>
 
-                <div className="desktop-only">
-                    <Link to="/" className="doodle-button">
-                        ← Back
-                    </Link>
-                </div>
                 <h1>Your Dictionary</h1>
+                <div className="burger-menu-icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
+                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
+                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
+                </div>
                 {items.length > 0 ? (
-                    <button onClick={downloadPDF} className="doodle-button download-btn">
-                        📦 PDF
-                    </button>
+                    <div className="desktop-only">
+                        <Link to="/" className="doodle-button">
+                            ← Back
+                        </Link>
+                        <button onClick={downloadPDF} className="doodle-button download-btn">
+                            📦 PDF
+                        </button>
+                    </div>
                 ) : <div style={{ width: '40px' }}></div>}
             </header>
 
