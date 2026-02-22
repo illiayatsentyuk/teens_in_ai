@@ -107,6 +107,12 @@ function Dictionary() {
         pdf.save(`${Date.now()}_dictionary.pdf`)
     }
 
+    const deleteAllItems = () => {
+        if (!window.confirm('Are you sure you want to delete all items?')) return
+        setItems([])
+        localStorage.removeItem('dictionary')
+    }
+
     return (
         <div className="dictionary-container">
             <header className="dictionary-header">
@@ -156,6 +162,9 @@ function Dictionary() {
                                 </div>
                             </li>
                         ))}
+                        <button className="delete-btn" data-html2canvas-ignore style={{ alignSelf: 'flex-start', marginTop: '20px', fontSize: '1.2rem' }} onClick={() => deleteAllItems()}>
+                            Delete All
+                        </button>
                     </ul>
                 </div>
             )}
