@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import OpenAI from 'openai';
-import AnalizeImagesDto from 'src/images/dto/analize-images.dto';
+import AnalizeImagesDto from '../perekladon/dto/analize-images.dto';
+import GenerateSentenceDto from '../perekladon/dto/generate-sentence.dto';
 
 @Injectable()
 export class OpenAIService {
@@ -43,6 +44,18 @@ export class OpenAIService {
         response_format: { type: "json_object" }
     })
     console.log(chatCompletion);
+    return chatCompletion.choices[0].message.content;
+  }
+
+  async generateSentence(body: GenerateSentenceDto){
+    const chatCompletion = await this.openai.chat.completions.create({
+      model: 'gpt-5.2',
+      messages: [{
+        role: 'user',
+        content: [{ type: 'text', text: `Generate a sentence with this words: ${body.words.join(', ')}` }]
+      }],
+      response_format: { type: "json_object" }
+    })
     return chatCompletion.choices[0].message.content;
   }
 }
