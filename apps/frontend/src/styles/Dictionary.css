@@ -137,12 +137,12 @@ body {
 }
 
 .item-date {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     color: #666;
 }
 
 .item-lang {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: var(--bg-blue);
     font-weight: bold;
 }
@@ -162,7 +162,7 @@ body {
     border: 2px solid var(--border-black);
     padding: 5px 12px;
     font-family: var(--font-doodle);
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     cursor: pointer;
     border-radius: 20% 30% 25% 20% / 25% 20% 30% 25%;
     align-self: flex-start;
