@@ -28,6 +28,9 @@ function Home() {
     }
 
     const startCamera = async () => {
+        setPreview(null)
+        setResult(null)
+        setDots([])
         // Mount the video element first so videoRef.current exists when the stream arrives
         setShowCamera(true)
         try {
