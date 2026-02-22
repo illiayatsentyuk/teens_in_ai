@@ -22,6 +22,20 @@ body {
     flex-direction: column;
 }
 
+.logo {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: var(--text-white);
+    margin: 0;
+    font-family: var(--font-doodle);
+    text-shadow: 2px 2px 0 var(--border-black);
+}
+
+.logo-link {
+    text-decoration: none;
+    z-index: 100;
+}
+
 .dictionary-header {
     background-color: var(--bg-dark);
     padding: 20px 40px;
@@ -207,10 +221,21 @@ body {
         height: 150px;
     }
 
-    .item-date { font-size: 0.9rem; }
-    .item-lang { font-size: 1rem; }
-    .item-result { font-size: 1.05rem; }
-    .delete-btn { font-size: 0.9rem; }
+    .item-date {
+        font-size: 0.9rem;
+    }
+
+    .item-lang {
+        font-size: 1rem;
+    }
+
+    .item-result {
+        font-size: 1.05rem;
+    }
+
+    .delete-btn {
+        font-size: 0.9rem;
+    }
 }
 
 /* ── Mobile (≤ 480px) ── */
@@ -219,6 +244,11 @@ body {
         padding: 14px 16px;
         gap: 10px;
         text-align: center;
+        justify-content: space-between !important;
+    }
+
+    .logo {
+        font-size: 1.3rem;
     }
 
     .dictionary-header h1 {
@@ -256,8 +286,21 @@ body {
         height: 200px;
     }
 
-    .item-date { font-size: 0.85rem; }
-    .item-lang { font-size: 0.95rem; }
-    .item-result { font-size: 1rem; }
-    .delete-btn { font-size: 0.85rem; align-self: stretch; text-align: center; }
+    .item-date {
+        font-size: 0.85rem;
+    }
+
+    .item-lang {
+        font-size: 0.95rem;
+    }
+
+    .item-result {
+        font-size: 1rem;
+    }
+
+    .delete-btn {
+        font-size: 0.85rem;
+        align-self: stretch;
+        text-align: center;
+    }
 }
