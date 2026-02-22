@@ -130,6 +130,40 @@ body {
     margin: 20px;
 }
 
+.camera-view {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.camera-view video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.camera-overlay-controls {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+@media (max-width: 480px) {
+    .camera-view {
+        height: 260px;
+    }
+}
+
 .camera-box-footer {
     display: flex;
     justify-content: center;

@@ -28,6 +28,8 @@ function Home() {
     }
 
     const startCamera = async () => {
+        // Mount the video element first so videoRef.current exists when the stream arrives
+        setShowCamera(true)
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
                 video: {
@@ -41,8 +43,8 @@ function Home() {
                 videoRef.current.srcObject = stream
                 await videoRef.current.play()
             }
-            setShowCamera(true)
         } catch (err) {
+            setShowCamera(false)
             alert('Camera access denied: ' + err.message)
         }
     }
@@ -260,11 +262,11 @@ function Home() {
                         )}
 
                         {showCamera && (
-                            <div className="camera-view" style={{ position: 'relative', height:'100%' }}>
-                                <video ref={videoRef} autoPlay style={{ maxWidth: '100%', borderRadius: '5px' }}></video>
-                                <div className="camera-overlay-controls" style={{position:'absolute', top:'65%',left:'15px'}}>
+                            <div className="camera-view">
+                                <video ref={videoRef} autoPlay></video>
+                                <div className="camera-overlay-controls">
                                     <button className="doodle-button" onClick={capturePhoto}>Capture</button>
-                                    <button className="doodle-button" style={{marginTop:'15px'}} onClick={stopCamera}>Cancel</button>
+                                    <button className="doodle-button" onClick={stopCamera}>Cancel</button>
                                 </div>
                             </div>
                         )}
