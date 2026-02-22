@@ -52,10 +52,16 @@ export class OpenAIService {
       model: 'gpt-5.2',
       messages: [{
         role: 'user',
-        content: [{ type: 'text', text: `Generate a sentence with this words: ${body.words.join(', ')}` }]
+        content: [{ type: 'text', text: `Generate sentence with first word(if you detect that language is not ukrainian, 
+          translate it to english): ${body.words[0]} and translate it to language on which this word is 
+          written(if you detect that language is not english, translate it to ukrainian): ${body.words[1]}. 
+          Respond ONLY with the JSON object, no other text. 
+          Response should be like this: {"sentence":"sentence", "translatedSentence":"translatedSentence"}. 
+          TranslatedSentence should be laguage on which second word was writtern.` }]
       }],
       response_format: { type: "json_object" }
     })
-    return chatCompletion.choices[0].message.content;
+    const result = JSON.parse(chatCompletion.choices[0].message.content || '{}');
+    return result;
   }
 }
