@@ -24,39 +24,40 @@ function Dictionary() {
         const element = listRef.current
         if (!element) return
 
-        // Temporarily widen the list so cards fill the PDF page width
         const PDF_CAPTURE_WIDTH = 960
-        const listEl = element.querySelector('.dictionary-list')
-        const prevElementWidth = element.style.width
-        const prevListCols = listEl ? listEl.style.gridTemplateColumns : ''
-        const prevListMaxWidth = listEl ? listEl.style.maxWidth : ''
 
-        element.style.width = `${PDF_CAPTURE_WIDTH}px`
-        if (listEl) {
-            listEl.style.gridTemplateColumns = `repeat(1, ${PDF_CAPTURE_WIDTH - 40}px)`
-            listEl.style.maxWidth = `${PDF_CAPTURE_WIDTH}px`
+        // Clone off-screen so the visible layout is never disturbed
+        const clone = element.cloneNode(true)
+        clone.style.cssText = `
+            position: fixed;
+            top: -99999px;
+            left: -99999px;
+            width: ${PDF_CAPTURE_WIDTH}px;
+            z-index: -1;
+            pointer-events: none;
+        `
+        const cloneList = clone.querySelector('.dictionary-list')
+        if (cloneList) {
+            cloneList.style.gridTemplateColumns = `repeat(1, ${PDF_CAPTURE_WIDTH - 40}px)`
+            cloneList.style.maxWidth = `${PDF_CAPTURE_WIDTH}px`
         }
+        document.body.appendChild(clone)
 
-        // Capture the full list, not just the visible viewport
-        const canvas = await html2canvas(element, {
+        // Capture the full list height from the clone
+        const canvas = await html2canvas(clone, {
             scale: 3,
             useCORS: true,
             logging: false,
             backgroundColor: '#ffffff',
-            height: element.scrollHeight,
+            height: clone.scrollHeight,
             width: PDF_CAPTURE_WIDTH,
-            windowHeight: element.scrollHeight,
+            windowHeight: clone.scrollHeight,
             windowWidth: PDF_CAPTURE_WIDTH,
             scrollX: 0,
             scrollY: 0,
         })
 
-        // Restore original styles
-        element.style.width = prevElementWidth
-        if (listEl) {
-            listEl.style.gridTemplateColumns = prevListCols
-            listEl.style.maxWidth = prevListMaxWidth
-        }
+        document.body.removeChild(clone)
 
         const pdf = new jsPDF('p', 'mm', 'a4')
         const pdfWidth = pdf.internal.pageSize.getWidth()
@@ -70,7 +71,7 @@ function Dictionary() {
         pdf.setFont('helvetica', 'bold')
         pdf.setFontSize(18)
         pdf.setTextColor(255, 255, 255)
-        pdf.text('Your Dictionary', pdfWidth / 2, 15, { align: 'center' })
+        pdf.text('Perekladon(by RoboLegion)', pdfWidth / 2, 15, { align: 'center' })
 
         pdf.setFont('helvetica', 'normal')
         pdf.setFontSize(9)
