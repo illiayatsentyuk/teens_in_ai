@@ -260,11 +260,11 @@ function Home() {
                         )}
 
                         {showCamera && (
-                            <div className="camera-view">
+                            <div className="camera-view" style={{ position: 'relative', height:'100%' }}>
                                 <video ref={videoRef} autoPlay style={{ maxWidth: '100%', borderRadius: '5px' }}></video>
-                                <div className="camera-overlay-controls">
+                                <div className="camera-overlay-controls" style={{position:'absolute', top:'65%',left:'15px'}}>
                                     <button className="doodle-button" onClick={capturePhoto}>Capture</button>
-                                    <button className="doodle-button" onClick={stopCamera}>Cancel</button>
+                                    <button className="doodle-button" style={{marginTop:'15px'}} onClick={stopCamera}>Cancel</button>
                                 </div>
                             </div>
                         )}

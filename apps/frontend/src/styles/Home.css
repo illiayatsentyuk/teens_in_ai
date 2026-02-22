@@ -45,7 +45,6 @@ body {
     transition: transform 0.2s, box-shadow 0.2s;
     user-select: none;
     display: flex;
-    align-items: center;
     gap: 10px;
     text-decoration: none;
     color: var(--bg-dark);
