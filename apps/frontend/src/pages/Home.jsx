@@ -356,7 +356,7 @@ function Home() {
                             </div>
                         )}
                     </div>
-                    <div className="camera-box-warning">
+                    <div className="camera-box-warning"> 
                         <input
                             type="checkbox"
                             style={{ width: '20px', height: '20px' }}
