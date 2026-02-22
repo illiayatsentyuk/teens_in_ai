@@ -13,6 +13,8 @@ function Home() {
     const [loading, setLoading] = useState(false)
     const [showCamera, setShowCamera] = useState(false)
     const [savedIndices, setSavedIndices] = useState([])
+    const [isWarningChecked, setIsWarningChecked] = useState(false)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
     const videoRef = useRef(null)
     const streamRef = useRef(null)
 
@@ -111,6 +113,7 @@ function Home() {
     }
 
     const analyzeImage = async () => {
+        if (!isWarningChecked) return alert('Please confirm that you agree not to share personal data.')
         if (!preview) return alert('Upload image first')
         if (dots.length === 0) return alert('Click on the image to place at least one dot (up to 3)')
         setLoading(true)
@@ -129,7 +132,7 @@ function Home() {
                     langTo,
                     dots
                 })
-            }) 
+            })
             if (!response.ok) {
                 const errText = await response.text()
                 throw new Error(errText || `HTTP ${response.status}`)
@@ -168,7 +171,7 @@ function Home() {
         }
         localStorage.setItem('dictionary', JSON.stringify([newItem, ...saved]))
         setSavedIndices(prev => [...prev, index])
-        alert('Збережено у словник!')
+        alert('Saved to dictionary!')
     }
 
     const saveToDictionary = () => {
@@ -189,7 +192,7 @@ function Home() {
         })
 
         if (itemsToSave.length === 0) {
-            alert('Усі пункти вже збережено!')
+            alert('All items already saved!')
             return
         }
 
@@ -201,21 +204,32 @@ function Home() {
     return (
         <div className="home-container">
             <header className="header-top">
-                <div className="header-left">
+                <div className="burger-menu-icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
+                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
+                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
+                </div>
+
+                <div className={`mobile-nav-overlay ${isMenuOpen ? 'open' : ''}`}>
+                    <Link to="/" onClick={() => setIsMenuOpen(false)} className="nav-link">Home</Link>
+                    <Link to="/dictionary" onClick={() => setIsMenuOpen(false)} className="nav-link">Dictionary</Link>
+                </div>
+
+                <div className="header-left desktop-only">
                     <div className="doodle-button">
-                        <span role="img" aria-label="globe">🌐</span> ОБЕРИ МОВУ
+                        <span role="img" aria-label="globe">🌐</span> CHOOSE LANGUAGE
                     </div>
                     <div className="lang-selector-box">
                         <div className="lang-dropdowns">
                             <div>
-                                <span>З: </span>
+                                <span>From: </span>
                                 <select className="doodle-select" value={langFrom} onChange={e => setLangFrom(e.target.value)}>
                                     <option value="Ukrainian">Ukrainian</option>
                                     <option value="English">English</option>
                                 </select>
                             </div>
                             <div>
-                                <span> На: </span>
+                                <span> To: </span>
                                 <select className="doodle-select" value={langTo} onChange={e => setLangTo(e.target.value)}>
                                     <option value="English">English</option>
                                     <option value="Ukrainian">Ukrainian</option>
@@ -224,16 +238,17 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                <div className="header-right">
+                <div className="header-right desktop-only">
                     <Link to="/dictionary" className="doodle-button">
-                        <span role="img" aria-label="book">📖</span> ВІДКРИТИ СЛОВНИК
+                        <span role="img" aria-label="book">📖</span> OPEN DICTIONARY
                     </Link>
                 </div>
             </header>
 
             <main className="main-content">
                 <div className="camera-box">
-                    <h2 className="camera-box-title">СФОТОГРАФУЙ ПРЕДМЕТ!</h2>
+                    <p style={{ color: '#ffeb3b', fontWeight: 'bold' }}>WARNING! Your photo is being processed by AI (errors may occur).</p>
+                    <h2 className="camera-box-title">SNAP A PHOTO!</h2>
 
                     <div className="preview-container">
                         {!preview && !showCamera && (
@@ -289,28 +304,33 @@ function Home() {
                                     const dot = dots[i]
                                     if (!dot) return null
                                     const isRightSide = dot.x > 50
-                                    const yOffset = (i * 45) - 45 // Wider staggering to avoid overlap
+                                    const isMobile = window.innerWidth <= 480
+                                    const yOffset = isMobile ? (i * 35) - 35 : (i * 45) - 45
+                                    const horizontalGap = isMobile ? 15 : 35
+                                    const labelMaxWidth = isMobile ? '120px' : '180px'
+
                                     return (
                                         <div key={i} className="dot-label" style={{
                                             position: 'absolute',
                                             left: `${dot.x}%`,
                                             top: `${dot.y}%`,
-                                            // 35px gap so the red marker is visible beside the label
                                             transform: isRightSide
-                                                ? `translate(calc(-100% - 35px), calc(-50% + ${yOffset}px))`
-                                                : `translate(35px, calc(-50% + ${yOffset}px))`,
+                                                ? `translate(calc(-100% - ${horizontalGap}px), calc(-50% + ${yOffset}px))`
+                                                : `translate(${horizontalGap}px, calc(-50% + ${yOffset}px))`,
                                             zIndex: 20 + i,
                                             pointerEvents: 'auto',
-                                            maxWidth: '180px'
+                                            maxWidth: labelMaxWidth,
+                                            fontSize: isMobile ? '0.8rem' : '1.1rem',
+                                            padding: isMobile ? '4px 8px' : '8px 15px'
                                         }}>
                                             {el.textFrom}: {el.textTo}
-                                            <div style={{ marginTop: '4px' }}>
+                                            <div style={{ marginTop: '2px' }}>
                                                 <button
                                                     onClick={(e) => { e.stopPropagation(); saveItemToDictionary(el, i) }}
-                                                    style={{ fontSize: '10px', cursor: savedIndices.includes(i) ? 'default' : 'pointer', fontFamily: 'var(--font-doodle)' }}
+                                                    style={{ fontSize: isMobile ? '8px' : '10px', cursor: savedIndices.includes(i) ? 'default' : 'pointer', fontFamily: 'var(--font-doodle)' }}
                                                     disabled={savedIndices.includes(i)}
                                                 >
-                                                    {savedIndices.includes(i) ? 'Збережено' : 'Зберегти'}
+                                                    {savedIndices.includes(i) ? 'Saved' : 'Save'}
                                                 </button>
                                             </div>
                                         </div>
@@ -322,40 +342,49 @@ function Home() {
 
                     <div className="camera-box-footer">
                         <button className="doodle-button" onClick={startCamera}>
-                            <span role="img" aria-label="camera">📷</span> ВІДКРИТИ КАМЕРУ
+                            <span role="img" aria-label="camera">📷</span> OPEN CAMERA
                         </button>
                         <div className="upload-btn-wrapper">
                             <label className="doodle-button" style={{ cursor: 'pointer' }}>
-                                <span role="img" aria-label="upload">📤</span> ЗАВАНТАЖИТИ ФОТО
+                                <span role="img" aria-label="upload">📤</span> UPLOAD PHOTO
                                 <input type="file" onChange={handleImageUpload} accept="image/*" style={{ display: 'none' }} />
                             </label>
                         </div>
+                    </div>
+                    <div className="camera-box-warning">
+                        <input
+                            type="checkbox"
+                            style={{ width: '20px', height: '20px' }}
+                            checked={isWarningChecked}
+                            onChange={(e) => setIsWarningChecked(e.target.checked)}
+                        />
+                        <p style={{ fontSize: '18px' }}>Do not give the system access to your personal data. All data is stored only in the browser!</p>
                     </div>
                 </div>
 
                 <button
                     className="analyze-button"
                     onClick={analyzeImage}
-                    disabled={loading || dots.length === 0}
+                    disabled={loading || dots.length === 0 || !isWarningChecked}
                 >
                     {loading ? '...' : 'Analyze'}
                 </button>
 
                 {result && !loading && (
-                    <div style={{ position: 'fixed', bottom: '40px', right: '40px', display: 'flex', gap: '15px' }}>
+                    <div className="post-analyze-actions">
                         <button
                             className="doodle-button"
                             onClick={saveToDictionary}
                             disabled={savedIndices.length === (result.elements?.length || 0)}
                             style={{ background: '#28a745', color: 'white' }}
                         >
-                            {savedIndices.length === (result.elements?.length || 0) ? 'Збережено!' : 'Зберегти все'}
+                            {savedIndices.length === (result.elements?.length || 0) ? 'Saved!' : 'Save all'}
                         </button>
                         <button
                             className="doodle-button"
                             onClick={clearDots}
                         >
-                            Очистити
+                            Clear
                         </button>
                     </div>
                 )}

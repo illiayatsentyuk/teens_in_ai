@@ -40,8 +40,10 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
-    transition: transform 0.2s;
+    border-radius: 20% 30% 25% 20% / 25% 20% 30% 25%;
+    box-shadow: 6px 6px 0 var(--border-black);
+    transition: transform 0.2s, box-shadow 0.2s;
+    user-select: none;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -50,19 +52,21 @@ body {
 }
 
 .doodle-button:hover {
-    transform: scale(1.05) rotate(-1deg);
+    transform: translate(-3px, -3px) rotate(-1deg);
+    box-shadow: 10px 10px 0 var(--border-black);
+}
+
+.doodle-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--border-black);
 }
 
 .lang-selector-box {
-    background-color: var(--bg-blue);
+    background-color: var(--box-blue);
     border: 3px solid var(--border-black);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 10px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-top: 10px;
+    box-shadow: 6px 6px 0 var(--border-black);
 }
 
 .lang-dropdowns {
@@ -99,15 +103,17 @@ body {
     align-items: center;
     position: relative;
     max-width: 600px;
-    width: 100%;
+    width: 95%;
+    padding: 20px 15px;
 }
 
 .camera-box-title {
     color: white;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     text-transform: uppercase;
     margin-bottom: 20px;
     text-align: center;
+    line-height: 1.1;
 }
 
 .preview-container {
@@ -127,9 +133,11 @@ body {
 
 .camera-box-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 15px;
     width: 100%;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .analyze-button {
@@ -179,4 +187,130 @@ body {
     z-index: 999 !important;
     border-color: var(--bg-blue);
     box-shadow: 10px 10px 0 var(--border-black);
+}
+
+/* Burger Menu Styles */
+.burger-menu-icon {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.bar {
+    width: 100%;
+    height: 4px;
+    background-color: white;
+    border-radius: 10px;
+    transition: 0.3s;
+    border: 1px solid var(--border-black);
+}
+
+.bar.open:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.bar.open:nth-child(2) {
+    opacity: 0;
+}
+
+.bar.open:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+.mobile-nav-overlay {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    transition: 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+    z-index: 1000;
+}
+
+.mobile-nav-overlay.open {
+    left: 0;
+}
+
+.nav-link {
+    font-family: var(--font-doodle);
+    font-size: 2.5rem;
+    color: white;
+    text-decoration: none;
+    border: 3px solid transparent;
+    padding: 10px 20px;
+}
+
+.nav-link:hover {
+    border: 3px solid white;
+    border-radius: 20px;
+}
+
+.desktop-only {
+    display: flex;
+}
+
+@media (max-width: 900px) {
+    .desktop-only {
+        display: none !important;
+    }
+
+    .burger-menu-icon {
+        display: flex;
+    }
+
+    .header-top {
+        padding: 10px 20px;
+        min-height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .camera-box-title {
+        font-size: 1.8rem;
+    }
+
+    .camera-box-footer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .camera-box-footer .doodle-button,
+    .camera-box-footer .upload-btn-wrapper,
+    .camera-box-footer .upload-btn-wrapper label {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .analyze-button {
+        font-size: 1.8rem;
+        padding: 8px 30px;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .analyze-button:hover:not(:disabled) {
+        transform: translateX(-50%) scale(1.05);
+    }
+
+    .camera-box-warning p {
+        font-size: 14px !important;
+    }
+}
+
+.camera-box-warning {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
 }

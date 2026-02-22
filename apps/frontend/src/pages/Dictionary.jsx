@@ -6,6 +6,7 @@ import '../styles/Dictionary.css'
 
 function Dictionary() {
     const [items, setItems] = useState([])
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
     const listRef = useRef(null)
 
     useEffect(() => {
@@ -14,7 +15,7 @@ function Dictionary() {
     }, [])
 
     const deleteItem = (id) => {
-        if (!window.confirm('Ви впевнені, що хочете видалити цей запис?')) return
+        if (!window.confirm('Are you sure you want to delete this entry?')) return
         const updated = items.filter(item => item.id !== id)
         setItems(updated)
         localStorage.setItem('dictionary', JSON.stringify(updated))
@@ -45,26 +46,37 @@ function Dictionary() {
     return (
         <div className="dictionary-container">
             <header className="dictionary-header">
-                <div>
+                <div className="burger-menu-icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
+                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
+                    <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
+                </div>
+
+                <div className={`mobile-nav-overlay ${isMenuOpen ? 'open' : ''}`}>
+                    <Link to="/" onClick={() => setIsMenuOpen(false)} className="nav-link">Home</Link>
+                    <Link to="/dictionary" onClick={() => setIsMenuOpen(false)} className="nav-link">Dictionary</Link>
+                </div>
+
+                <div className="desktop-only">
                     <Link to="/" className="doodle-button">
-                        ← Назад
+                        ← Back
                     </Link>
                 </div>
-                <h1>Ваш Словник</h1>
-                {items.length > 0 && (
+                <h1>Your Dictionary</h1>
+                {items.length > 0 ? (
                     <button onClick={downloadPDF} className="doodle-button download-btn">
                         📦 PDF
                     </button>
-                )}
+                ) : <div style={{ width: '40px' }}></div>}
             </header>
 
             {items.length === 0 ? (
                 <div className="empty-state">
-                    <p>У словнику поки що немає записів. Сфотографуйте щось!</p>
+                    <p>Your dictionary is empty. Snap some photos to add items!</p>
                 </div>
             ) : (
                 <div ref={listRef} className="dictionary-content">
-                    <ul  className="dictionary-list">
+                    <ul className="dictionary-list">
                         {items.map(item => (
                             <li key={item.id} className="dictionary-item">
                                 <div className="item-visual">
@@ -75,7 +87,7 @@ function Dictionary() {
                                     <div className="item-lang">{item.language}</div>
                                     <div className="item-result">{item.result}</div>
                                     <button className="delete-btn" data-html2canvas-ignore onClick={() => deleteItem(item.id)}>
-                                        Видалити
+                                        Delete
                                     </button>
                                 </div>
                             </li>
