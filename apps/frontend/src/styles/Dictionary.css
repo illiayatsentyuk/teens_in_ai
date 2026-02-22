@@ -216,14 +216,13 @@ body {
 /* ── Mobile (≤ 480px) ── */
 @media (max-width: 480px) {
     .dictionary-header {
-        flex-direction: column;
         padding: 14px 16px;
         gap: 10px;
         text-align: center;
     }
 
     .dictionary-header h1 {
-        font-size: 1.3rem;
+        font-size: 1rem;
     }
 
     .doodle-button {

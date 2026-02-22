@@ -387,6 +387,7 @@ function Home() {
                         <button
                             className="doodle-button"
                             onClick={clearDots}
+                            style={{ margin: '0 auto' }}
                         >
                             Clear
                         </button>

@@ -27,8 +27,7 @@ body {
     padding: 20px;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    min-height: 150px;
+    align-items: center;
     border-bottom: 4px solid var(--border-black);
 }
 
