@@ -356,7 +356,31 @@ function Home() {
                             </div>
                         )}
                     </div>
-
+                    <div className="camera-box-warning">
+                        <input
+                            type="checkbox"
+                            style={{ width: '20px', height: '20px' }}
+                            checked={isWarningChecked}
+                            onChange={(e) => setIsWarningChecked(e.target.checked)}
+                        />
+                        <p style={{ fontSize: '18px',color: '#ffeb3b' }}>I understand that the data is processed by AI and it can make mistakes.</p>
+                    </div>
+                    <div className="lang-selector-box" style={{marginTop: '10px'}}>
+                        <div className="lang-dropdowns">
+                            <div>
+                                <select className="doodle-select" value={langFrom} onChange={e => setLangFrom(e.target.value)}>
+                                    <option value="Ukrainian">Ukrainian</option>
+                                    <option value="English">English</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select className="doodle-select" value={langTo} onChange={e => setLangTo(e.target.value)}>
+                                    <option value="English">English</option>
+                                    <option value="Ukrainian">Ukrainian</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     <div className="camera-box-footer">
                         <button className="doodle-button" onClick={startCamera}>
                             <span role="img" aria-label="camera">📷</span> OPEN CAMERA
@@ -374,31 +398,6 @@ function Home() {
                                 <input type="file" onChange={handleImageUpload} accept="image/*" style={{ display: 'none' }} />
                             </label>
                         </div>
-                    </div>
-                    <div className="lang-selector-box">
-                        <div className="lang-dropdowns">
-                            <div>
-                                <select className="doodle-select" value={langFrom} onChange={e => setLangFrom(e.target.value)}>
-                                    <option value="Ukrainian">Ukrainian</option>
-                                    <option value="English">English</option>
-                                </select>
-                            </div>
-                            <div>
-                                <select className="doodle-select" value={langTo} onChange={e => setLangTo(e.target.value)}>
-                                    <option value="English">English</option>
-                                    <option value="Ukrainian">Ukrainian</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="camera-box-warning">
-                        <input
-                            type="checkbox"
-                            style={{ width: '20px', height: '20px' }}
-                            checked={isWarningChecked}
-                            onChange={(e) => setIsWarningChecked(e.target.checked)}
-                        />
-                        <p style={{ fontSize: '18px' }}>Do not give the system access to your personal data. All data is stored only in the browser!</p>
                     </div>
                 </div>
 
