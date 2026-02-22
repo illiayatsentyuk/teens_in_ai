@@ -16,6 +16,21 @@ body {
     background-color: #f0f0f0;
 }
 
+.logo {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: var(--text-white);
+    margin: 0;
+    font-family: var(--font-doodle);
+    text-shadow: 2px 2px 0 var(--border-black);
+}
+
+.logo-link {
+    text-decoration: none;
+    z-index: 100;
+}
+
+
 .home-container {
     min-height: 100vh;
     display: flex;
@@ -308,8 +323,17 @@ body {
 }
 
 @media (max-width: 480px) {
-    .camera-box-title {
-        font-size: 1.8rem;
+    .logo {
+        font-size: 1.5rem;
+    }
+
+    .header-top {
+        padding: 15px;
+        justify-content: space-between;
+    }
+
+    .burger-menu-icon {
+        margin-right: 0;
     }
 
     .camera-box-footer {

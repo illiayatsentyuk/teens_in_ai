@@ -155,6 +155,10 @@ function Dictionary() {
                     <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
                 </div>
 
+                <Link to="/" className="logo-link">
+                    <h1 className="logo">Perekladon</h1>
+                </Link>
+
                 <div className={`mobile-nav-overlay ${isMenuOpen ? 'open' : ''}`}>
                     <Link to="/" onClick={() => setIsMenuOpen(false)} className="nav-link">Home</Link>
                     <Link to="/dictionary" onClick={() => setIsMenuOpen(false)} className="nav-link">Dictionary</Link>

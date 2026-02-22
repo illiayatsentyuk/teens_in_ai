@@ -215,6 +215,10 @@ function Home() {
                     <div className={`bar ${isMenuOpen ? 'open' : ''}`}></div>
                 </div>
 
+                <Link to="/" className="logo-link">
+                    <h1 className="logo">Perekladon</h1>
+                </Link>
+
                 <div className={`mobile-nav-overlay ${isMenuOpen ? 'open' : ''}`}>
                     <Link to="/" onClick={() => setIsMenuOpen(false)} className="nav-link">Home</Link>
                     <Link to="/dictionary" onClick={() => setIsMenuOpen(false)} className="nav-link">Dictionary</Link>
@@ -338,7 +342,7 @@ function Home() {
                                             <div style={{ marginTop: '2px' }}>
                                                 <button
                                                     onClick={(e) => { e.stopPropagation(); saveItemToDictionary(el, i) }}
-                                                    style={{ fontSize: isMobile ? '8px' : '10px', cursor: savedIndices.includes(i) ? 'default' : 'pointer', fontFamily: 'var(--font-doodle)' }}
+                                                    style={{ fontSize: isMobile ? '12px' : '14px', cursor: savedIndices.includes(i) ? 'default' : 'pointer', fontFamily: 'var(--font-doodle)', padding: '2px 3px' }}
                                                     disabled={savedIndices.includes(i)}
                                                 >
                                                     {savedIndices.includes(i) ? 'Saved' : 'Save'}
