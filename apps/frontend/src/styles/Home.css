@@ -46,6 +46,10 @@ body {
     border-bottom: 4px solid var(--border-black);
 }
 
+.header-left {
+    gap: 10px;
+}
+
 .doodle-button {
     background: white;
     border: 3px solid var(--border-black);
@@ -339,7 +343,7 @@ body {
     .camera-box-footer {
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        gap: 18px;
     }
 
     .camera-box-footer .doodle-button {
