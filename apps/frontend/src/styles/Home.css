@@ -141,21 +141,22 @@ body {
 }
 
 .analyze-button {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
     background: var(--bg-blue);
     color: white;
     font-family: var(--font-doodle);
-    font-size: 2.2rem;
-    padding: 10px 45px;
-    border: 4px solid var(--border-black);
+    font-size: 1.5rem;
+    padding: 10px 30px;
+    border: 3px solid var(--border-black);
     border-radius: 60% 40% 50% 50% / 50% 50% 50% 50%;
     cursor: pointer;
-    box-shadow: 0 0 15px 5px rgba(82, 133, 244, 0.6);
+    box-shadow: 4px 4px 0 var(--border-black);
     transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    text-shadow: 2px 2px 0 var(--border-black);
-    z-index: 100;
+    text-shadow: 1px 1px 0 var(--border-black);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
 }
 
 .analyze-button:hover:not(:disabled) {
@@ -282,29 +283,61 @@ body {
     .camera-box-footer {
         flex-direction: column;
         align-items: center;
+        gap: 10px;
     }
 
-    .camera-box-footer .doodle-button,
-    .camera-box-footer .upload-btn-wrapper,
+    .camera-box-footer .doodle-button {
+        width: 100%;
+        justify-content: center;
+        order: 1;
+    }
+
+    .camera-box-footer .upload-btn-wrapper {
+        width: 100%;
+        order: 2;
+    }
+
     .camera-box-footer .upload-btn-wrapper label {
         width: 100%;
         justify-content: center;
     }
 
     .analyze-button {
-        font-size: 1.8rem;
-        padding: 8px 30px;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
+        position: relative;
+        font-size: 1.5rem;
+        padding: 10px 30px;
+        bottom: 0;
+        left: 0;
+        transform: none;
+        margin: 5px auto;
+        display: flex;
+        order: 3;
+        width: 100%;
+        box-shadow: 6px 6px 0 var(--border-black);
     }
 
     .analyze-button:hover:not(:disabled) {
-        transform: translateX(-50%) scale(1.05);
+        transform: scale(1.02);
     }
 
     .camera-box-warning p {
         font-size: 14px !important;
+    }
+
+    .post-analyze-actions {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        align-items: center;
+        margin-top: 10px;
+        margin-bottom: 40px;
+    }
+
+    .post-analyze-actions .doodle-button {
+        width: 100%;
+        justify-content: center;
     }
 }
 
