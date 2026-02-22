@@ -24,6 +24,19 @@ function Dictionary() {
         const element = listRef.current
         if (!element) return
 
+        // Temporarily widen the list so cards fill the PDF page width
+        const PDF_CAPTURE_WIDTH = 960
+        const listEl = element.querySelector('.dictionary-list')
+        const prevElementWidth = element.style.width
+        const prevListCols = listEl ? listEl.style.gridTemplateColumns : ''
+        const prevListMaxWidth = listEl ? listEl.style.maxWidth : ''
+
+        element.style.width = `${PDF_CAPTURE_WIDTH}px`
+        if (listEl) {
+            listEl.style.gridTemplateColumns = `repeat(1, ${PDF_CAPTURE_WIDTH - 40}px)`
+            listEl.style.maxWidth = `${PDF_CAPTURE_WIDTH}px`
+        }
+
         // Capture the full list, not just the visible viewport
         const canvas = await html2canvas(element, {
             scale: 3,
@@ -31,12 +44,19 @@ function Dictionary() {
             logging: false,
             backgroundColor: '#ffffff',
             height: element.scrollHeight,
-            width: element.scrollWidth,
+            width: PDF_CAPTURE_WIDTH,
             windowHeight: element.scrollHeight,
-            windowWidth: element.scrollWidth,
+            windowWidth: PDF_CAPTURE_WIDTH,
             scrollX: 0,
             scrollY: 0,
         })
+
+        // Restore original styles
+        element.style.width = prevElementWidth
+        if (listEl) {
+            listEl.style.gridTemplateColumns = prevListCols
+            listEl.style.maxWidth = prevListMaxWidth
+        }
 
         const pdf = new jsPDF('p', 'mm', 'a4')
         const pdfWidth = pdf.internal.pageSize.getWidth()
