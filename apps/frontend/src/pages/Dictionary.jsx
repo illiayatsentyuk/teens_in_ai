@@ -39,7 +39,7 @@ function Dictionary() {
         const pdfHeight = (canvas.height * pdfWidth) / canvas.width
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
-        pdf.save('dictionary.pdf')
+        pdf.save(`${Date.now()}_dictionary.pdf`)
     }
 
     return (
@@ -64,7 +64,7 @@ function Dictionary() {
                 </div>
             ) : (
                 <div ref={listRef} className="dictionary-content">
-                    <ul className="dictionary-list">
+                    <ul  className="dictionary-list">
                         {items.map(item => (
                             <li key={item.id} className="dictionary-item">
                                 <div className="item-visual">
