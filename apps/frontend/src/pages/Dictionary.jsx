@@ -7,7 +7,7 @@ import '../styles/Dictionary.css'
 function Dictionary() {
     const [items, setItems] = useState([])
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const [sentenceState, setSentenceState] = useState({}) // item.id -> sentence string
+    const [sentenceState, setSentenceState] = useState({}) 
     const [isSentenceStarted, setIsSentenceStarted] = useState(false)
     const [loadingItemId, setLoadingItemId] = useState(null)
     const listRef = useRef(null)
@@ -31,9 +31,14 @@ function Dictionary() {
             })
             const data = await response.json()
             const parsedData = typeof data === 'string' ? JSON.parse(data) : data
-            const generatedText = parsedData.sentence || parsedData.text || JSON.stringify(parsedData)
 
-            setSentenceState(prev => ({ ...prev, [id]: generatedText }))
+            const original = parsedData.sentence || parsedData.text || ""
+            const translated = parsedData.translatedSentences || parsedData.translatedSentence || ""
+
+            setSentenceState(prev => ({
+                ...prev,
+                [id]: { original, translated }
+            }))
         } catch (err) {
             console.error('Failed to generate sentence:', err)
             alert('Failed to generate sentence. Please try again.')
@@ -198,18 +203,24 @@ function Dictionary() {
                                             {loadingItemId === item.id ? '...' : (sentenceState[item.id] ? 'Regenerate' : 'Create Sentence')}
                                         </button>
                                     </div>
-                                    {sentenceState[item.id] && (
-                                        <div className="generated-sentence" style={{
-                                            marginTop: '15px',
-                                            padding: '10px',
-                                            background: '#f0f8ff',
-                                            borderRadius: '8px',
-                                            borderLeft: '4px solid var(--bg-blue)',
-                                            fontStyle: 'italic'
-                                        }}>
-                                            <strong>AI Sentence:</strong> {sentenceState[item.id]}
+                                    <div className="generated-sentence" style={{
+                                        marginTop: '15px',
+                                        padding: '12px',
+                                        background: '#f8f9ff',
+                                        borderRadius: '10px',
+                                        borderLeft: '4px solid var(--bg-blue)',
+                                        fontSize: '0.95rem',
+                                        lineHeight: '1.4'
+                                    }}>
+                                        <div style={{ marginBottom: '6px' }}>
+                                            <strong>Sentence:</strong> {sentenceState[item.id].original}
                                         </div>
-                                    )}
+                                        {sentenceState[item.id].translated && (
+                                            <div style={{ color: '#444' }}>
+                                                <strong>Translated:</strong> {sentenceState[item.id].translated}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </li>
                         ))}
