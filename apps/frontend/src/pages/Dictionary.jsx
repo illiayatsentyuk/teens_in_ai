@@ -7,13 +7,30 @@ import '../styles/Dictionary.css'
 function Dictionary() {
     const [items, setItems] = useState([])
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [sentence, setSentence] = useState([])
+    const [isSentenceStarted, setIsSentenceStarted] = useState(false)
     const listRef = useRef(null)
+
 
     useEffect(() => {
         const saved = JSON.parse(localStorage.getItem('dictionary') || '[]')
         setItems(saved)
     }, [])
 
+    const createSentence = async () => {
+        setIsSentenceStarted(true)
+        const apiUrl = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '') || 'http://localhost:3000'
+
+        const response = await fetch(`${apiUrl}/sentence`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items }),
+        })
+        const data = await response.json()
+        setSentence(data)
+        setIsSentenceStarted(false)
+
+    }
     const deleteItem = (id) => {
         if (!window.confirm('Are you sure you want to delete this entry?')) return
         const updated = items.filter(item => item.id !== id)
@@ -158,6 +175,9 @@ function Dictionary() {
                                     <div className="item-result">{item.result}</div>
                                     <button className="delete-btn" data-html2canvas-ignore onClick={() => deleteItem(item.id)}>
                                         Delete
+                                    </button>
+                                    <button onClick={() => createSentence(item.result)} style={{}}>
+                                        Create Sentence
                                     </button>
                                 </div>
                             </li>
