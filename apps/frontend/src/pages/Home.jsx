@@ -257,7 +257,7 @@ function Home() {
             <main className="main-content"> 
                 <div className="camera-box">
                     <h2 className="camera-box-title">How to use:</h2>
-                    <ul style={{ color: '#ffeb3b', fontWeight: 'bold', margin: '0 0 1rem', paddingLeft: '1.25rem', lineHeight: 1.5, textAlign: 'center', listStyle:"none" }}>
+                    <ul style={{ color: '#ffeb3b', fontWeight: 'bold', margin: '0 0 0.8rem', paddingLeft: '1.25rem', lineHeight: 1.5, textAlign: 'center', listStyle:"none" }}>
                         <li>1. Upload a photo or take a photo <br />(give access to camera)</li>
                         <li>2. Click on the photo to choose an object <br />(up to 3 points)</li>
                         <li>3. Click the &quot;Analyze&quot; button</li>
